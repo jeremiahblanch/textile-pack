@@ -2,19 +2,17 @@
 
 import { SuppliedItem, Space, PackingResult, WorkingItem } from './types';
 
-const findTaller = (a: SuppliedItem, b: SuppliedItem) => b.height - a.height;
-
 export class TextilePack {
   private maxWidth: number;
   private maxHeight: number;
   private root!: Space;
 
-  constructor() {
-    this.maxWidth = Infinity;
+  constructor({ maxWidth }: { maxWidth: number }) {
+    this.maxWidth = maxWidth;
     this.maxHeight = Infinity;
   }
 
-  pack(items: SuppliedItem[], maxWidth: number): PackingResult {
+  pack(items: SuppliedItem[]): PackingResult {
     const len = items.length;
     if (len === 0) {
       return {
@@ -24,18 +22,20 @@ export class TextilePack {
       };
     }
 
-    this.maxWidth = maxWidth;
-
     const workingItems: WorkingItem[] = items
-      .map((item, index) => ({
-        height: item.height,
-        index,
-        item,
-        width: item.width,
-        x: -1,
-        y: -1,
-      }))
-      .sort(findTaller);
+      .map((item, index) => {
+        this.validateItem(item);
+
+        return {
+          height: item.height,
+          index,
+          item,
+          width: item.width,
+          x: -1,
+          y: -1,
+        };
+      })
+      .sort(getHeightDiff);
 
     this.root = {
       x: 0,
@@ -178,6 +178,21 @@ export class TextilePack {
       return null;
     }
   }
+
+  private validateItem(item: SuppliedItem): void {
+    if (!(item.width > 0 && item.width <= this.maxWidth)) {
+      throw new Error(
+        `Item width of ${item.width} is invalid. It must be > 0 and <= ${this.maxWidth}`,
+      );
+    }
+    if (item.height <= 0) {
+      throw new Error(
+        `Item height of ${item.height} is invalid. It must be > 0`,
+      );
+    }
+  }
 }
 
-export default TextilePack;
+function getHeightDiff(a: SuppliedItem, b: SuppliedItem): number {
+  return b.height - a.height;
+}
