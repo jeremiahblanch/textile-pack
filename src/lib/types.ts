@@ -1,42 +1,32 @@
-export interface Item {
-  width: number;
+export type Box2D = {
   height: number;
-  [key: string]: unknown; // Allow for additional properties
-}
-
-export interface Box extends Item {
-  item: Item;
+  width: number;
   x?: number;
   y?: number;
-}
+};
 
-export interface PackingOptions {
+export type FittedItem = Box2D & {
+  item: SuppliedItem;
+};
+
+export type Options = {
   maxWidth?: number;
-}
+};
 
-export interface PackingResult {
+export type PackingResult = {
   width: number;
   height: number;
-  items: Box[];
-}
+  fittedItems: FittedItem[];
+};
 
-export interface Block {
-  width: number;
-  height: number;
-  x?: number;
-  y?: number;
-}
-
-export interface Space {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+export type Space = Box2D & {
   used?: boolean;
   right?: Space;
   down?: Space;
-}
+};
 
-export interface TextilePackOptions {
-  maxWidth?: number;
-}
+export type SuppliedItem = {
+  width: number;
+  height: number;
+  [key: string]: unknown; // Allow for additional properties
+};
