@@ -1,11 +1,14 @@
-export type Box2D = {
+export type Box = {
   height: number;
   width: number;
-  x?: number;
-  y?: number;
 };
 
-export type FittedItem = Box2D & {
+export type BoxWithPos = Box & {
+  x: number;
+  y: number;
+};
+
+export type PackedItem = BoxWithPos & {
   item: SuppliedItem;
 };
 
@@ -16,10 +19,10 @@ export type Options = {
 export type PackingResult = {
   width: number;
   height: number;
-  fittedItems: FittedItem[];
+  packedItems: PackedItem[];
 };
 
-export type Space = Box2D & {
+export type Space = BoxWithPos & {
   used?: boolean;
   right?: Space;
   down?: Space;
@@ -29,4 +32,9 @@ export type SuppliedItem = {
   width: number;
   height: number;
   [key: string]: unknown; // Allow for additional properties
+};
+
+export type WorkingItem = BoxWithPos & {
+  item: SuppliedItem;
+  index: number;
 };
