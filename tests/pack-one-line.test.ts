@@ -1,12 +1,14 @@
-import { packItems, TextilePack } from '../src';
-import { Item, PackingResult } from '../src';
+import { PackedItem, TextilePack } from '../src';
+import { SuppliedItem, PackingResult } from '../src';
 
 interface TestCase {
   maxWidth: number;
   blocks: [number, number][];
 }
 
-function verifyOneLine(result: PackingResult, items: Item[]): void {
+const tp = new TextilePack();
+
+function verifyOneLine(result: PackingResult, items: PackedItem[]): void {
   // result.height should be equal to largest height in items
   const largestHeight = items.reduce(
     (highest, item) => (item.height > highest ? item.height : highest),
@@ -59,13 +61,16 @@ describe('textile-bin-pack: Given 2 rectangles of equal height but differing wid
       blocks.map(([w, h]) => `${w}x${h}`).join(', ') + ` within ${maxWidth}`;
 
     it(description, function () {
-      const bins: Item[] = blocks.map(([width, height]) => ({ width, height }));
+      const items: SuppliedItem[] = blocks.map(([width, height]) => ({
+        width,
+        height,
+      }));
 
-      const result = packItems(bins, { maxWidth });
+      const result = tp.pack(items, maxWidth);
 
-      expect(result.items).toBeDefined();
-      expect(result.items.length).toEqual(blocks.length);
-      verifyOneLine(result, result.items);
+      expect(result.packedItems).toBeDefined();
+      expect(result.packedItems.length).toEqual(blocks.length);
+      verifyOneLine(result, result.packedItems);
     });
   });
 });
