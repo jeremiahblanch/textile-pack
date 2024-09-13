@@ -1,43 +1,81 @@
 'use strict';
 
-import { Block, Space, TextilePackOptions } from './types';
+import { SuppliedItem, Space, PackingResult, WorkingItem } from './types';
+
+const findTaller = (a: SuppliedItem, b: SuppliedItem) => b.height - a.height;
 
 export class TextilePack {
   private maxWidth: number;
   private maxHeight: number;
   private root!: Space;
 
-  constructor({ maxWidth = Infinity }: TextilePackOptions = {}) {
-    this.maxWidth = maxWidth;
+  constructor() {
+    this.maxWidth = Infinity;
     this.maxHeight = Infinity;
   }
 
-  fit(givenBlocks: Block[]): Block[] {
-    const len = givenBlocks.length;
+  pack(items: SuppliedItem[], maxWidth: number): PackingResult {
+    const len = items.length;
     if (len === 0) {
-      return [];
+      return {
+        height: 0,
+        packedItems: [],
+        width: 0,
+      };
     }
 
-    const blocks = [...givenBlocks];
-    const width = this.maxWidth;
-    const height = blocks[0].height;
+    this.maxWidth = maxWidth;
 
-    this.root = { x: 0, y: 0, width, height };
+    const workingItems: WorkingItem[] = items
+      .map((item, index) => ({
+        height: item.height,
+        index,
+        item,
+        width: item.width,
+        x: -1,
+        y: -1,
+      }))
+      .sort(findTaller);
 
-    for (let n = 0; n < len; n++) {
-      const block = blocks[n];
-      const node = this.findSpace(this.root, block.width, block.height);
-      const fit = node
-        ? this.splitSpace(node, block.width, block.height)
-        : this.growSpace(block.width, block.height);
+    this.root = {
+      x: 0,
+      y: 0,
+      width: this.maxWidth,
+      height: workingItems[0].height,
+    };
 
-      if (fit) {
-        block.x = fit.x;
-        block.y = fit.y;
+    const packedItems = Array(len); // we will places the results back here, in their original positions
+    let furthestX = 0;
+    let furthestY = 0;
+
+    workingItems.forEach(({ height, index, item, width }) => {
+      const spaceFoundWithin = this.findSpace(this.root, width, height);
+
+      const space = spaceFoundWithin
+        ? this.splitSpace(spaceFoundWithin, width, height)
+        : this.growSpace(width, height);
+
+      if (!space) {
+        throw new Error(`Could no find space for item[${index}]`);
       }
-    }
 
-    return blocks;
+      packedItems[index] = {
+        item,
+        height,
+        width,
+        x: space.x,
+        y: space.y,
+      };
+
+      furthestX = Math.max(furthestX, space.x + width);
+      furthestY = Math.max(furthestY, space.y + height);
+    });
+
+    return {
+      height: furthestY,
+      packedItems,
+      width: furthestX,
+    };
   }
 
   private findSpace(root: Space, width: number, height: number): Space | null {
