@@ -1,4 +1,4 @@
-import { packItems } from '../src';
+import { packItemsIntoWidth } from '../src';
 import type { PackedItem, SuppliedItem, PackingResult } from '../src';
 
 interface TestCase {
@@ -64,7 +64,7 @@ describe('textile-bin-pack: Given 2 rectangles of equal height but differing wid
         height,
       }));
 
-      const result = packItems(items, maxWidth);
+      const result = packItemsIntoWidth(items, maxWidth);
 
       expect(result.packedItems).toBeDefined();
       expect(result.packedItems.length).toEqual(blocks.length);
