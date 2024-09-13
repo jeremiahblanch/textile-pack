@@ -1,3 +1,4 @@
 import { TextilePack } from './lib/TextilePack.class';
+import { packItems } from './lib/adaptor';
 
-export default TextilePack;
+export { packItems, TextilePack };

@@ -1,4 +1,4 @@
-import TextilePack from '../src';
+import { packItems, TextilePack } from '../src';
 
 const tp = new TextilePack({
   maxWidth: 10,
