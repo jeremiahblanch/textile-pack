@@ -86,9 +86,8 @@ export class TextilePack {
       );
     } else if (width <= root.width && height <= root.height) {
       return root;
-    } else {
-      return null;
     }
+    return null;
   }
 
   private splitSpace(node: Space, width: number, height: number): Space {
@@ -128,9 +127,8 @@ export class TextilePack {
       return this.growRight(width, height);
     } else if (canGrowDown) {
       return this.growDown(width, height);
-    } else {
-      return null;
-    } // need to ensure sensible root starting size to avoid this happening
+    }
+    return null;
   }
 
   private growRight(width: number, height: number): Space | null {
@@ -151,9 +149,9 @@ export class TextilePack {
     const node = this.findSpace(this.root, width, height);
     if (node) {
       return this.splitSpace(node, width, height);
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   private growDown(width: number, height: number): Space | null {
