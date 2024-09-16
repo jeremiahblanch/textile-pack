@@ -1,5 +1,6 @@
 import { packItemsIntoWidth } from '../src';
 import type { PackedItem, SuppliedItem, PackingResult } from '../src';
+import { doAnyItemsIntersect } from './lib';
 import type { TestCase } from './types';
 
 describe('Given 3 rectangles, finds the smallest plan', function () {
@@ -37,13 +38,11 @@ describe('Given 3 rectangles, finds the smallest plan', function () {
       }));
 
       const result = packItemsIntoWidth(items, maxWidth);
-
-      console.log(JSON.stringify(result));
-
       expect(result.packedItems).toBeDefined();
       expect(result.packedItems.length).toEqual(blocks.length);
       expect(result.height).toEqual(expectedHeight);
       expect(result.width).toEqual(expectedWidth);
+      expect(doAnyItemsIntersect(result.packedItems)).toBeFalsy();
     });
   });
 });

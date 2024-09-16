@@ -1,18 +1,10 @@
 import { packItemsIntoWidth } from '../src';
-import type { PackedItem, SuppliedItem, PackingResult } from '../src';
+import type { SuppliedItem } from '../src';
+import { areItemsOnOneLine, doAnyItemsIntersect } from './lib';
 
 interface TestCase {
   maxWidth: number;
   blocks: [number, number][];
-}
-
-function verifyOneLine(result: PackingResult, items: PackedItem[]): void {
-  // result.height should be equal to largest height in items
-  const largestHeight = items.reduce(
-    (highest, item) => (item.height > highest ? item.height : highest),
-    0,
-  );
-  expect(result.height).toBeCloseTo(largestHeight, 4);
 }
 
 describe('textile-bin-pack: Given 2 rectangles of equal height but differing width, where total width <= maxWidth, puts both side by side.', function () {
@@ -68,7 +60,8 @@ describe('textile-bin-pack: Given 2 rectangles of equal height but differing wid
 
       expect(result.packedItems).toBeDefined();
       expect(result.packedItems.length).toEqual(blocks.length);
-      verifyOneLine(result, result.packedItems);
+      expect(areItemsOnOneLine(result.packedItems, result.height)).toBeTruthy();
+      expect(doAnyItemsIntersect(result.packedItems)).toBeFalsy();
     });
   });
 });

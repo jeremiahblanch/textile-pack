@@ -1,6 +1,6 @@
 {
   "name": "textile-pack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -16,7 +16,8 @@
   "keywords": [
     "bin pack",
     "bin-pack",
-    "textile"
+    "textile",
+    "cutting plan"
   ],
   "author": "Jeremiah Blanch",
   "license": "ISC",

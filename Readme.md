@@ -67,7 +67,3 @@ Builds on top of [this code][enochriese] by Enoch Riese, , [this code][bryanburg
 [jakesgordon]: https://github.com/jakesgordon/bin-packing
 [post]: http://codeincomplete.com/posts/2011/5/7/bin_packing/
 [bryanburgers]: https://github.com/bryanburgers/bin-pack
-
-```
-
-```
