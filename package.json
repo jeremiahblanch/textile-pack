@@ -1,6 +1,6 @@
 {
   "name": "textile-pack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -31,5 +31,9 @@
   "dependencies": {
     "eslint": "^9.7.0",
     "prettier": "^3.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremiahblanch/textile-pack"
   }
 }
