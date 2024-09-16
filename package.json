@@ -14,10 +14,8 @@
     "test": "jest"
   },
   "keywords": [
-    "bin",
-    "pack",
-    "bin",
-    "packing",
+    "bin pack",
+    "bin-pack",
     "textile"
   ],
   "author": "Jeremiah Blanch",
