@@ -20,7 +20,7 @@
   ],
   "author": "Jeremiah Blanch",
   "license": "ISC",
-  "description": "",
+  "description": "A typescript implementation of the bin-packing problem specifically for textile applications where the width is fixed",
   "devDependencies": {
     "@types/jest": "^29.5.13",
     "jest": "^29.7.0",
